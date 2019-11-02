@@ -1,2 +1,18 @@
 @import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 @import '../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
+
+body {
+    background-color: #263238;
+    color: #fff;
+}
+.c-bg-dark {
+    background-color: #263238;
+}
+/* .router-link-exact-active {
+    background-color: #17a2b8;
+    border-radius: 3px;
+    color: white !important;
+} */
+.form-group .form-control {
+border: 1px solid transparent;
+}

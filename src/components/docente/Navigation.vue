@@ -1,0 +1,28 @@
+<template>
+    <div>
+        <b-navbar variant="info" type="dark" toggleable="lg">
+            <b-container>
+                <b-navbar-toggle class="text-primary" target="nav-collapse"></b-navbar-toggle>
+                <b-collapse id="nav-collapse" is-nav>
+                    <b-navbar-nav>
+                        <b-link :to="{name: 'Dinicio'}" class="text-white p-2"><fa icon="home" /> Inicio</b-link>
+                    </b-navbar-nav>
+                    <b-navbar-nav class="ml-auto">
+                        <b-link :to="{name: 'asignaturas'}" class="text-white p-2"><fa icon="book" /> Asignaturas</b-link>
+                        <b-link :to="{name: 'ayuda'}" class="text-white p-2"><fa icon="question-circle"/> Ayuda</b-link>
+                        <b-nav-item-dropdown class="text-white" right>
+                        
+                        <b-dropdown-item href="#">Cerrar sesión</b-dropdown-item>
+                        </b-nav-item-dropdown>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-container>
+        </b-navbar>
+    </div>
+</template>
+<script>
+
+export default {
+    
+}
+</script>
