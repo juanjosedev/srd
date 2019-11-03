@@ -8,7 +8,8 @@
                         <b-link :to="{name: 'Dinicio'}" class="text-white p-2"><fa icon="home" /> Inicio</b-link>
                     </b-navbar-nav>
                     <b-navbar-nav class="ml-auto">
-                        <b-link :to="{name: 'DAsignaturas'}" class="text-white p-2"><fa icon="book" /> Asignaturas</b-link>
+                        <b-link :to="{name: 'EAsignaturas'}" class="text-white p-2"><fa icon="user" /> Asignaturas</b-link>
+                        <b-link :to="{name: 'evaluar'}" class="text-white p-2"><fa icon="book" /> Evaluar docente</b-link>
                         <b-link :to="{name: 'ayuda'}" class="text-white p-2"><fa icon="question-circle"/> Ayuda</b-link>
                         <Logout />
                     </b-navbar-nav>

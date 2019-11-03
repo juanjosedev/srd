@@ -21,10 +21,13 @@
                     </b-form>
                 </b-col>
             </b-row>
+            {{ usuario }}
         </b-container>
     </div>
 </template>
 <script>
+import {mapState} from 'vuex'
+import {mapActions} from 'vuex'
 export default {
     data() {
         return {
@@ -33,31 +36,54 @@ export default {
             error: ''
         }
     },
+    computed: {
+        ...mapState(['usuario'])
+    },
     methods: {
+        ...mapActions(['addUsuario']),
         login() {
             if(this.cedula && this.password) {
-                // TODO
-                let res = {auth: true, user: {cedula: this.cedula, nombre: 'Zapata', type: 'docente'}};
-
-                if(res.auth) {
-                    if(res.user.type === 'admin') {
-                        console.log('mandar a admin');
+                // ?documento=1011&clave=1011
+                this.$http.get('http://localhost:8080/srd/Sesion', { 
+                    params: { 
+                        documento: this.cedula,
+                        clave: this.password
                     } 
-                    if(res.user.type === 'docente') {
-                        localStorage.setItem('user', JSON.stringify(res.user));
-                        this.$router.push({name: 'docente'});
-                    } 
-                    if (res.user.type === 'estudiante') {
-                        console.log('mandar a estudiante');
+                })
+                .then((res) => {
+                    let data = res.data;
+                    if(data.auth) {
+                        localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                        this.addUsuario();
+                        if(data.usuario.tipo == 'Admin') {
+                            this.$router.push('/admin');
+                        }
+                        if (data.usuario.tipo == 'Docente') {
+                            this.$router.push('/docente');
+                        }
+                        if(data.usuario.tipo == 'Estudiante') {
+                            this.$router.push('/estudiante');
+                        }
+                    } else {
+                        this.error = 'Documento o contraseña incorrectos';
                     }
-                } else {
-                    this.error = "Usuario o contraseña incorrectos";
-                }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                
 
-                // TODO
             } else {
                 this.error = "Todos los campos son obligatorios";
             }
+
+            
+            // let res = {auth: true, user: {cedula: this.cedula, nombre: 'Zapata', type: 'docente'}};
+            // this.$router.push('docente');
+
+
+
+
         }
     }
 }

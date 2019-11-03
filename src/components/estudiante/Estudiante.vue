@@ -1,25 +1,28 @@
 <template>
     <div>
         <Navigation />
-        {{ usuario }}
         <router-view></router-view>
+        <Evaluacion />
     </div>
 </template>
 <script>
+import Navigation from './Navigation'
+import Evaluacion from './Evaluacion'
 import {mapState} from 'vuex'
-import Navigation from '@/components/docente/Navigation'
 export default {
-    components: {
-        Navigation
-    },
     computed: {
         ...mapState(['usuario'])
     }
     ,
     created() {
-        if(this.usuario.tipo != 'Docente') {
+        if(this.usuario.tipo != 'Estudiante') {
             this.$router.push('/');
         }
+    },
+    components: {
+        Navigation,
+        Evaluacion
     }
+
 }
 </script>
