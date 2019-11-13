@@ -15,13 +15,13 @@ export default {
     created() {
         let usuario = JSON.parse(localStorage.getItem('usuario'));
         if(usuario) {
-            if(usuario.tipo == 'Admin') {
+            if(usuario.tipoUsuario.nombre == 'Admin') {
                 this.$router.push('/admin');
             } 
-            if(usuario.tipo == 'Docente') {
+            if(usuario.tipoUsuario.nombre == 'Docente') {
                 this.$router.push('/docente');
             }
-            if(usuario.tipo == 'Estudiante') {
+            if(usuario.tipoUsuario.nombre == 'Estudiante') {
                 this.$router.push('/estudiante');
             }
         }   

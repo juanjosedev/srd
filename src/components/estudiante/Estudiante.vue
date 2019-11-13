@@ -2,7 +2,7 @@
     <div>
         <Navigation />
         <router-view></router-view>
-        <Evaluacion />
+        <!-- <Evaluacion /> -->
     </div>
 </template>
 <script>
@@ -15,7 +15,7 @@ export default {
     }
     ,
     created() {
-        if(this.usuario.tipo != 'Estudiante') {
+        if(this.usuario.tipoUsuario.nombre != 'Estudiante') {
             this.$router.push('/');
         }
     },

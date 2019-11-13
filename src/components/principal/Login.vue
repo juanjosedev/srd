@@ -55,13 +55,13 @@ export default {
                     if(data.auth) {
                         localStorage.setItem('usuario', JSON.stringify(data.usuario));
                         this.addUsuario();
-                        if(data.usuario.tipo == 'Admin') {
+                        if(data.usuario.tipoUsuario.nombre == 'Administrador') {
                             this.$router.push('/admin');
                         }
-                        if (data.usuario.tipo == 'Docente') {
+                        if (data.usuario.tipoUsuario.nombre == 'Docente') {
                             this.$router.push('/docente');
                         }
-                        if(data.usuario.tipo == 'Estudiante') {
+                        if(data.usuario.tipoUsuario.nombre == 'Estudiante') {
                             this.$router.push('/estudiante');
                         }
                     } else {

@@ -15,6 +15,8 @@ import Admin from '@/components/admin/Admin'
 import Estudiante from '@/components/estudiante/Estudiante'
 import EAsignaturas from '@/components/estudiante/Asignaturas'
 import EDocentes from '@/components/estudiante/Docentes'
+import Evaluaciones from '@/components/estudiante/Evaluacion'
+import Evaluar from '@/components/estudiante/Evaluar'
 
 Vue.use(Router)
 
@@ -41,23 +43,23 @@ const router = new Router({
     {
       path: '/docente',
       component: Docente,
-      children: [
-        {
-          path: '/',
-          name: 'Dinicio',
-          component: Inicio
-        },
-        {
-          path: 'asignaturas/:codigo?',
-          name: 'DAsignaturas',
-          component: DAsignaturas
-        },
-        {
-          path: 'ayuda',
-          name: 'ayuda',
-          component: Ayuda
-        }
-      ],
+      // children: [
+      //   {
+      //     path: '/',
+      //     name: 'Dinicio',
+      //     component: Inicio
+      //   },
+      //   {
+      //     path: 'asignaturas/:codigo?',
+      //     name: 'DAsignaturas',
+      //     component: DAsignaturas
+      //   },
+      //   {
+      //     path: 'ayuda',
+      //     name: 'ayuda',
+      //     component: Ayuda
+      //   }
+      // ],
       meta: {
         requiresAuth: true
       }
@@ -65,16 +67,16 @@ const router = new Router({
     {
       path: '/admin',
       component: Admin,
-      children: [
-        {
-          path: '/',
-          name: 'Ainicio',
-          component: Inicio
-        }
-      ],
-      meta: {
-        requiresAuth: true
-      }
+      // children: [
+      //   {
+      //     path: '/',
+      //     name: 'Ainicio',
+      //     component: Inicio
+      //   }
+      // ],
+      // meta: {
+      //   requiresAuth: true
+      // }
     },
     {
       path: '/estudiante',
@@ -91,13 +93,27 @@ const router = new Router({
           component: EAsignaturas,
           children: [
             {
-              path: '/estudiante/asignaturas/:codigo/docentes/:cedula?',
+              path: '/estudiante/asignaturas/:codigo/perfil/:documento?',
               name: 'EDocentes',
               component: EDocentes
             }
           ]
+        },
+        {
+          path: 'evaluaciones',
+          name: 'Evaluaciones',
+          component: Evaluaciones
         }
       ],
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/estudiante/evaluaciones/:id_perfil',
+      name: 'Evaluar',
+      component: Evaluar,
+      props: true,
       meta: {
         requiresAuth: true
       }

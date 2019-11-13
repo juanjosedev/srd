@@ -2,7 +2,7 @@
     <div>
         <Navigation />
         {{ usuario }}
-        <router-view></router-view>
+        <!-- <router-view></router-view> -->
     </div>
 </template>
 <script>
@@ -17,7 +17,7 @@ export default {
     }
     ,
     created() {
-        if(this.usuario.tipo != 'Docente') {
+        if(this.usuario.tipoUsuario.nombre != 'Docente') {
             this.$router.push('/');
         }
     }

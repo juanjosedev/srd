@@ -1,7 +1,7 @@
 <template>
     <div>
         <Navigation />
-        <router-view></router-view>
+        <!-- <router-view></router-view> -->
     </div>
 </template>
 <script>
@@ -14,7 +14,7 @@ export default {
     }
     ,
     created() {
-        if(this.usuario.tipo != 'Admin') {
+        if(this.usuario.tipoUsuario.nombre != 'Admin') {
             this.$router.push('/');
         }
     },
