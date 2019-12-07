@@ -1,16 +1,18 @@
 <template>
     <div>
         <Navigation />
-        {{ usuario }}
-        <!-- <router-view></router-view> -->
+        <InfoSesion />
+        <router-view></router-view>
     </div>
 </template>
 <script>
+import InfoSesion from '../principal/InfoSesion'
 import {mapState} from 'vuex'
 import Navigation from '@/components/docente/Navigation'
 export default {
     components: {
-        Navigation
+        Navigation,
+        InfoSesion
     },
     computed: {
         ...mapState(['usuario'])

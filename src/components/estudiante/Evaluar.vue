@@ -15,6 +15,7 @@
                 </b-row>
             </b-container>
         </div>
+        <!-- Preguntas -->
         <div class="h-25" cols="12" v-if="pregunta_actual != preguntas.length">
             <div style="height: 100%" class="d-flex justify-content-center align-items-center">
                 <b-container>
@@ -38,13 +39,13 @@
         <div class="h-25" cols="12" v-if="pregunta_actual != preguntas.length">
             <div style="height: 100%" class="d-flex justify-content-center align-items-center">
                <b-container class="d-flex justify-content-center">
-                  <b-button @click="continuar(preguntas[pregunta_actual].id_pregunta)" 
-                  class="btn-lg" :variant="puntuacion != 0 ? 'info' : 'outline-info'" :disabled="puntuacion == 0">Continuar</b-button>
+                    <b-button @click="siguientePregunta(preguntas[pregunta_actual].id_habilidad)" 
+                    class="btn-lg" :variant="puntuacion != 0 ? 'info' : 'outline-info'" :disabled="puntuacion == 0">Continuar</b-button>
                </b-container>
             </div>
         </div>
-
-        <div class="h-50" cols="12" v-if="pregunta_actual == preguntas.length">
+        <!-- Comentario -->
+        <div class="h-50" cols="12" v-if="pregunta_actual == preguntas.length && !enviado">
             <div style="height: 100%" class="d-flex align-items-center">
                 <b-container>
                     <b-form @submit.prevent="enviarComentario">
@@ -58,81 +59,131 @@
                                 class="border-0 bg-black-1 text-white"
                             ></b-form-textarea>
                         </b-form-group>
-                        <span class="float-right text-info">{{ `0 / 255` }}</span>
+                        <span class="float-right text-info">{{ `${resultado.comentario.trim().length} / 255` }}</span>
                     </b-form>
                </b-container>
             </div>
         </div>
 
-        <div class="h-25" cols="12" v-if="pregunta_actual == preguntas.length">
+        <div class="h-25" cols="12" v-if="pregunta_actual == preguntas.length && !enviado">
             <div style="height: 100%" class="d-flex justify-content-center align-items-center">
                <b-container class="d-flex justify-content-center">
-                  <b-button
-                  class="btn-lg" variant="info" :disabled="puntuacion == 0">Continuar</b-button>
+                    <b-button @click="enviarEvaluacion"
+                    class="btn-lg" :variant="resultado.comentario.trim().length < 10 ?'outline-info' : 'info'" :disabled="resultado.comentario.trim().length < 10">Finalizar y enviar</b-button>
+               </b-container>
+            </div>
+        </div>
+        <!-- Finalizar -->
+        <div class="h-50" cols="12" v-if="enviado">
+            <div style="height: 100%" class="d-flex justify-content-center align-items-center">
+               <b-container class="d-flex justify-content-center">
+                   <h1 class="display-4 text-center">
+                       Gracias por realizar la evaluación!
+                   </h1>
                </b-container>
             </div>
         </div>
 
+        <div class="h-25" cols="12" v-if="enviado">
+            <div style="height: 100%" class="d-flex justify-content-center align-items-center">
+               <b-container class="d-flex justify-content-center">
+                    <a href="#" class="text-info" @click.prevent="salir"> Salir <fa icon="sign-out-alt" size="lg" class="ml-1" /> </a>
+               </b-container>
+            </div>
+        </div>
+        
     </div>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
     data() {
         return {
-            preguntas: [
-                {
-                    id_habilidad: 1,
-                    id_pregunta: 1,
-                    nombreHabilidad: 'Gestión',
-                    cuerpoPregunta: 'Error molestiae esse possimus molestias dicta animi non excepturi incidunt accusamus delectus quibusdam vero quasi enim quo, quis sunt ratione! Hic, quo.'
-                },
-                {
-                    id_habilidad: 1,
-                    id_pregunta: 2,
-                    nombreHabilidad: 'Gestión',
-                    cuerpoPregunta: 'Nihil, expedita obcaecati eveniet iusto delectus nam quidem quod dolores neque dolorem qui!'
-                },
-                {
-                    id_habilidad: 1,
-                    id_pregunta: 3,
-                    nombreHabilidad: 'Gestión',
-                    cuerpoPregunta: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.'
-                },
-                {
-                    id_habilidad: 2,
-                    id_pregunta: 4,
-                    nombreHabilidad: 'Aprendizaje',
-                    cuerpoPregunta: 'Lorem ipsum dolor sit amet expedita obcaecati eveniet iusto delectus nam quidem quod dolores neque dolorem consectetur adipisicing elit.'
-                }
-            ],
+            preguntas: [],
             pregunta_actual: 0,
             star_efect: 0,
             puntuacion: 0,
             resultado: {
-                respuestas: [],
-                comentario: '',
-                promedio: 0
-            }
+                id_perfil: 0,
+                id_estudiante: 0,
+                documento: "",
+                habilidades: [],
+                comentario: ''
+            },
+            enviado: false
         }
     },
     props: ['perfil'],
+    computed: {
+        ...mapState(['usuario'])
+    },
     methods: {
+        getPreguntas() {
+            this.$http.get('http://localhost:8080/srd/EstudianteEvaluacion', {
+                params: {
+                    evaluacion: true
+                }
+            })
+            .then((res) => {
+                this.preguntas = res.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        },
         puntuar(puntuacion) {
             this.puntuacion = puntuacion;
         },
-        continuar(id_pregunta) {
+        siguientePregunta(id_habilidad) {
             this.pregunta_actual++;
-    
-            this.resultado.respuestas.push({id_pregunta: id_pregunta, nota: this.puntuacion});
-            this.resultado.promedio = this.resultado.promedio + this.puntuacion;
+            if(this.resultado.habilidades.length == 0) {
+                this.resultado.habilidades.push({
+                    id_habilidad: id_habilidad,
+                    valoracion: this.puntuacion
+                })
+            } else {
+                let i = this.resultado.habilidades.length - 1;
+                if(this.resultado.habilidades[i].id_habilidad == id_habilidad) {
+                    this.resultado.habilidades[i].valoracion = (this.resultado.habilidades[i].valoracion + this.puntuacion) / 2;
+                } else {
+                    this.resultado.habilidades.push({
+                        id_habilidad: id_habilidad,
+                        valoracion: this.puntuacion
+                    })
+                }
+            }
             this.star_efect = 0;
             this.puntuacion = 0;
+        },
+        enviarEvaluacion() {
+            // https://stackoverflow.com/questions/49673010/how-to-receive-form-parameters-values-in-server
+            this.enviado = true;
+            this.resultado.id_perfil = this.perfil.id_perfil;
+            this.resultado.id_estudiante = this.usuario.persona.id_estudiante;
+            this.resultado.documento = this.usuario.persona.documento;
+
+            let data = this.resultado
+            console.log(data)
+
+            this.$http.post('http://localhost:8080/srd/EstudianteEvaluacion', data)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+            console.log(this.resultado);
+        },
+        salir() {
+            this.$router.push({name: 'Evaluaciones'});
         }
     },
     created() {
         if(!this.perfil) {
-            this.$router.push('/');
-        }   
+            this.$router.push({name: 'Evaluaciones'});
+        }
+        this.getPreguntas();
     }
 }
 </script>

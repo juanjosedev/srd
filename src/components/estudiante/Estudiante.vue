@@ -1,6 +1,7 @@
 <template>
     <div>
         <Navigation />
+        <InfoSesion />
         <router-view></router-view>
         <!-- <Evaluacion /> -->
     </div>
@@ -8,6 +9,7 @@
 <script>
 import Navigation from './Navigation'
 import Evaluacion from './Evaluacion'
+import InfoSesion from '../principal/InfoSesion'
 import {mapState} from 'vuex'
 export default {
     computed: {
@@ -21,7 +23,8 @@ export default {
     },
     components: {
         Navigation,
-        Evaluacion
+        Evaluacion,
+        InfoSesion
     }
 
 }

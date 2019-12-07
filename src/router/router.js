@@ -43,23 +43,23 @@ const router = new Router({
     {
       path: '/docente',
       component: Docente,
-      // children: [
-      //   {
-      //     path: '/',
-      //     name: 'Dinicio',
-      //     component: Inicio
-      //   },
-      //   {
-      //     path: 'asignaturas/:codigo?',
-      //     name: 'DAsignaturas',
-      //     component: DAsignaturas
-      //   },
-      //   {
-      //     path: 'ayuda',
-      //     name: 'ayuda',
-      //     component: Ayuda
-      //   }
-      // ],
+      children: [
+        {
+          path: '/',
+          name: 'Dinicio',
+          component: Inicio
+        },
+        {
+          path: 'asignaturas/:id_perfil?',
+          name: 'DAsignaturas',
+          component: DAsignaturas
+        },
+        {
+          path: 'ayuda',
+          name: 'ayuda',
+          component: Ayuda
+        }
+      ],
       meta: {
         requiresAuth: true
       }

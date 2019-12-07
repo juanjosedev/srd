@@ -8,7 +8,7 @@
                 <b-row>
                     <b-col md="12">
                         <h1>Asignaturas pendientes
-                            <span v-if="spinner" class="float-right">
+                            <span v-if="asignaturas.length == 0" class="float-right">
                                 <b-spinner variant="info" type="grow" label="Spinning"></b-spinner>
                             </span>
                         </h1>
@@ -27,8 +27,6 @@
                                     <div class="text-right">
                                         <fa icon="arrow-right" />
                                     </div>
-                                <div>
-                                </div>
                             </router-link>
                         </div>
                     </b-col>
@@ -54,9 +52,6 @@ export default {
         ...mapState(['usuario']),
         hasCodigo: function() {
             return this.$route.params.codigo != undefined;
-        },
-        spinner: function() {
-            return this.asignaturas.length == 0;
         }
     },
     methods: {

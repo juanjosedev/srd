@@ -4,12 +4,17 @@
             <b-container class="py-5" v-if="asignatura">
                 <b-row>
                     <b-col md="12">
-                        <h1>Docentes de <span class="text-info">{{ asignatura.nombre }}</span></h1>
+                        <h1>
+                            Docentes de <span class="text-info">{{ asignatura.nombre }}</span>
+                            <span v-if="docentes.length == 0" class="float-right">
+                                <b-spinner variant="info" type="grow" label="Spinning"></b-spinner>
+                            </span>
+                        </h1>
                     </b-col>
                     <b-col class="py-3" md="12">
                         <b-card-group columns>
                             <b-card v-for="item in docentes" :key="item.id"
-                                :img-src="item.img"
+                                :img-src="item.img == 'http://localhost:8080/srd/img/user.jpg' ? '' : item.img"
                                 img-alt="Image"
                                 img-top
                                 tag="article"

@@ -77,8 +77,8 @@
                                     v-model="comentario_nuevo"
                                 ></b-form-textarea>
                             </b-form-group>
-                            <b-button type="submit" variant="info" :disabled="comentario_nuevo.length < 8">Comentar</b-button>
-                            <span class="float-right text-info">{{ `${comentario_nuevo.length} / 255` }}</span>
+                            <b-button type="submit" variant="info" :disabled="comentario_nuevo.trim().length < 8">Comentar</b-button>
+                            <span class="float-right text-info">{{ `${comentario_nuevo.trim().length } / 255` }}</span>
                         </b-form>
                     </b-col>
                 </b-row>
